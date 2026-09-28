@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8e1830">
+<title>Gladys PPH-Mobile</title>
+<style>
+:root{--red:#8e1830;--red2:#b21f35;--teal:#0b7a75;--ink:#17324d;--muted:#607386;--bg:#f5f7f9;--card:#fff;--line:#dce4ea;--good:#176b3a;--bad:#9b2335}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.app{max-width:720px;margin:auto;min-height:100vh;background:var(--bg)}
+header{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;padding:20px 18px 12px;position:sticky;top:0;z-index:5}
+.brand{font-size:25px;font-weight:900}.tag{font-size:12px;margin-top:4px;opacity:.92}
+.topEmergency{width:100%;margin-top:12px;border:0;border-radius:12px;background:#fff;color:var(--red);padding:14px 12px;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 2px 8px #0002}.nav{display:flex;gap:6px;overflow:auto;margin-top:14px}.nav button{border:0;background:#fff1;color:#fff;padding:9px 11px;border-radius:18px;white-space:nowrap;font-size:12px}.nav button.active{background:#fff;color:var(--red)}
+main{padding:15px}.view{display:none}.view.active{display:block}
+.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}.hero h1{margin:0 0 8px;font-size:25px}.hero p,.card p{line-height:1.55;color:#405466}
+.btn{display:inline-block;border:0;border-radius:11px;background:var(--red);color:#fff;padding:12px 15px;font-weight:800;text-decoration:none;cursor:pointer}.btn.teal{background:var(--teal)}.btn.light{background:#eef3f5;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;cursor:pointer}.tile .ico{font-size:28px}.tile h3{margin:8px 0 5px}.tile p{font-size:13px;margin:0;color:var(--muted)}
+.emergency{border:2px solid #d85d70;background:#fff7f8}.emergency h1{color:var(--red)}
+.step{display:flex;gap:13px;align-items:flex-start;margin:10px 0;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.num{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;flex:none}.step h3{margin:1px 0 5px}.step p{margin:0;font-size:14px}
+.motive{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.m{padding:11px;border-radius:10px;background:#eef4f6;font-size:13px;line-height:1.4}.m b{color:var(--teal);font-size:18px}
+.module{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge{font-size:11px;background:#e9f2f2;color:#0b625f;border-radius:20px;padding:5px 8px;font-weight:800}
+.question{margin:18px 0}.question h3{font-size:16px;line-height:1.4}.option{display:block;width:100%;text-align:left;padding:12px;margin:7px 0;border:1px solid var(--line);background:#fff;border-radius:10px;cursor:pointer}.option.selected{border-color:var(--red);background:#fff0f2}.feedback{padding:12px;border-radius:10px;margin-top:9px;font-weight:700}.good{background:#edf8f0;color:var(--good)}.bad{background:#fff0f2;color:var(--bad)}
+.progress{height:9px;background:#e5eaee;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:var(--teal)}
+.small{font-size:12px;color:var(--muted)}.source{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:15px}.list{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:11px;padding:12px;margin:8px 0;background:#fff}.field{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:5px 0 11px;font-size:15px}.stat{font-size:25px;font-weight:900}
+@media(max-width:430px){.grid{grid-template-columns:1fr}.brand{font-size:22px}.hero h1{font-size:22px}.motive{grid-template-columns:1fr}}
+
+.admin-link{position:fixed;right:10px;bottom:10px;width:16px;height:16px;border:0;border-radius:50%;background:#d71920;padding:0;opacity:1;z-index:20;cursor:pointer;box-shadow:0 1px 4px #0003}
+.admin-panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px}.admin-table th,.admin-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.admin-note{font-size:11px;color:var(--muted);line-height:1.45}
+
+</style>
+<link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#d71920"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+<div class="app">
+<header><div class="brand">Gladys PPH-Mobile</div><div class="tag">Gladys • Learn. Prepare. Respond.</div><button class="topEmergency" onclick="show('emergency')">🚨 EMERGENCY PPH GUIDE</button><div class="nav" id="nav"></div></header>
+<main>
+<section id="welcome" class="view active">
+<div class="hero"><h1>Gladys PPH-Mobile</h1><p style="font-size:18px;font-weight:800;color:var(--red)">Welcome to Gladys PPH-Mobile</p><p><b>Mobile Learning & Emergency Reminder System for Postpartum Haemorrhage</b></p><p>A simple learning and emergency reminder tool for frontline maternal-health workers.</p><p class="small">Learn. Prepare. Respond.</p><button class="btn" onclick="show('registration')">START REGISTRATION</button></div>
+</section>
+
+<section id="registration" class="view">
+<div class="hero"><h1>Registration</h1><p>Only essential information is requested.</p>
+<label>Full Name<input id="name" class="field" placeholder="Full name"></label>
+<label>Phone Number<input id="phone" class="field" placeholder="Phone number"></label>
+<label>Role/Cadre<select id="role" class="field"><option value="">Select role</option><option>Midwife</option><option>Nurse</option><option>Maternity Nurse</option><option>Community Health Worker</option><option>Birth Attendant</option><option>Other</option></select></label>
+<label>Facility/Community<input id="facility" class="field" placeholder="Facility or community"></label>
+<label>Country/District<input id="district" class="field" placeholder="Country / district"></label>
+<button class="btn" onclick="register()">CONTINUE</button></div>
+</section>
+
+<section id="home" class="view">
+<div class="hero"><h1>Welcome, <span id="welcomeName">Trainee</span></h1><p>Choose what you need.</p>
+<button class="btn" style="width:100%;font-size:18px;padding:17px" onclick="show('emergency')">🚨 EMERGENCY PPH GUIDE</button></div>
+<div class="grid">
+<div class="tile" onclick="show('learn')"><div class="ico">📚</div><h3>LEARN</h3><p>Five short learning sections.</p></div>
+<div class="tile" onclick="show('quiz')"><div class="ico">🧠</div><h3>QUICK QUIZ</h3></div>
+<div class="tile" onclick="show('progress')"><div class="ico">📊</div><h3>MY PROGRESS</h3></div>
+<div class="tile" onclick="show('videos')"><div class="ico">🎥</div><h3>TRAINING VIDEOS</h3></div>
+</div>
+<div class="hero" style="margin-top:14px"><h2 style="margin-top:0">OFFLINE</h2><p>Quick access when there is no internet.</p><button class="btn" style="width:100%;margin-bottom:9px" onclick="show('emergency')">🚨 EMERGENCY PPH GUIDE</button><button class="btn teal" style="width:100%" onclick="show('reminder')">🔔 OFFLINE REMINDER</button></div>
+</section>
+
+<section id="emergency" class="view">
+<div class="hero emergency"><h1>🚨 PPH EMERGENCY — ACT NOW</h1><p>Use the approved clinical protocol and seek appropriate help immediately. This guide does not replace clinical care.</p></div>
+<div class="card">
+<div class="step"><span class="num">1</span><div><h3>RECOGNIZE</h3><p>Identify abnormal postpartum bleeding and assess the woman's condition and vital signs according to the approved protocol.</p></div></div>
+<div class="step"><span class="num">2</span><div><h3>CALL FOR HELP</h3><p>Alert the appropriate maternity/emergency team immediately.</p></div></div>
+<div class="step"><span class="num">3</span><div><h3>START THE APPROVED PPH RESPONSE</h3><p>Follow the facility's current PPH protocol and initiate recommended emergency interventions without unnecessary delay.</p>
+<div class="motive">
+<div class="m"><b>M</b> Massage the uterus</div><div class="m"><b>O</b> Oxytocic</div><div class="m"><b>T</b> Tranexamic acid</div><div class="m"><b>I</b> IV fluids</div><div class="m"><b>V</b> Vaginal/genital tract examination</div><div class="m"><b>E</b> Escalate care</div>
+</div></div></div>
+<div class="step"><span class="num">4</span><div><h3>MONITOR</h3><p>Continuously monitor bleeding, vital signs, general condition and response to treatment.</p></div></div>
+<div class="step"><span class="num">5</span><div><h3>ESCALATE / REFER</h3><p>If bleeding persists, the woman becomes unstable, or higher-level care is required, activate the referral pathway immediately.</p></div></div>
+</div>
+<div class="card"><h3>LOCAL EMERGENCY CONTACTS</h3><p class="small">These details must be verified and configured before deployment.</p><div class="list">📞 Emergency / Referral Contact <b>—</b></div><div class="list">🏥 Referral Facility <b>—</b></div><div class="list">🚑 Transport Contact <b>—</b></div></div>
+<div class="card"><a class="btn teal" href="https://cdn.who.int/media/docs/default-source/reproductive-health/maternal-health/bleeding-after-birth-action-plans.pdf?sfvrsn=760aeb91_4" target="_blank">Open WHO Action Plan</a></div>
+</section>
+
+<section id="learn" class="view"><div class="hero"><h1>📚 Learn</h1><p>Learn → Answer → Immediate Feedback → Continue</p></div><div id="moduleList"></div></section>
+<section id="lesson" class="view"><div id="lessonBox"></div></section>
+<section id="quiz" class="view"><div class="hero"><h1>🧠 Quick Quiz</h1></div><div id="quizBox"></div></section>
+<section id="videos" class="view"><div class="hero"><h1>🎥 Training Videos</h1><p>Approved/official training resources.</p></div><div id="videoList"></div></section>
+<section id="reminder" class="view"><div class="hero"><h1>🔔 Offline Reminder</h1><p>Keep your refresher routine simple.</p><button class="btn" onclick="setReminder('Daily')">Daily Reminder</button> <button class="btn teal" onclick="setReminder('Weekly')">Weekly Reminder</button><p id="reminderStatus"></p></div></section>
+<section id="progress" class="view"><div class="hero"><h1>📊 My Progress</h1><div class="card"><div class="stat" id="lessonStat">0 / 5</div><div class="small">Lessons completed</div><div class="progress"><span id="bar" style="width:0%"></span></div></div><div class="card"><div class="stat" id="quizStat">—</div><div class="small">Best quiz result</div></div><div class="card"><div class="stat" id="dateStat">—</div><div class="small">Last learning date</div></div></div></section>
+
+<section id="admin" class="view">
+  <div class="hero">
+    <h1>Data Collection</h1>
+    <p class="admin-note">Private project-use area. This interface is not shown in the trainee navigation.</p>
+  </div>
+  <div class="admin-panel">
+    <h3>Current Device</h3>
+    <div class="grid">
+      <div class="card"><div class="stat" id="adminRegistered">0</div><div class="small">Registered on this device</div></div>
+      <div class="card"><div class="stat" id="adminLessons">0</div><div class="small">Lessons completed</div></div>
+      <div class="card"><div class="stat" id="adminQuiz">—</div><div class="small">Best quiz result</div></div>
+      <div class="card"><div class="stat" id="adminLast">—</div><div class="small">Last learning date</div></div>
+    </div>
+  </div>
+  <div class="admin-panel">
+    <h3>Collect / Transfer Data</h3>
+    <p class="admin-note">This offline prototype stores data on the user's device. Export a record from a device, then collect the exported files for your pilot records.</p>
+    <button class="btn" onclick="exportData()">EXPORT THIS DEVICE DATA</button>
+    <label class="btn light" style="display:inline-block;margin-top:8px;cursor:pointer">
+      IMPORT A DATA FILE
+      <input type="file" accept=".json,application/json" style="display:none" onchange="importData(event)">
+    </label>
+    <div id="adminMessage" class="admin-note" style="margin-top:10px"></div>
+  </div>
+  <div class="admin-panel">
+    <h3>Collected Records</h3>
+    <div id="adminRecords"><p class="admin-note">No imported records yet.</p></div>
+    <button class="btn light" onclick="clearImportedData()">Clear imported records</button>
+  </div>
+</section>
+
+</main>
+</div>
+<script>
+const modules=[{"title": "Understanding PPH", "content": "Postpartum haemorrhage (PPH) means excessive bleeding after childbirth. Early recognition is important because rapid action and appropriate treatment can be needed. When abnormal bleeding is suspected, act promptly according to the approved clinical protocol.", "questions": [["What does PPH mean?", ["Infection after delivery", "Excessive bleeding after childbirth", "High blood pressure during pregnancy", "Pain during labour"], 1], ["Why is early recognition of PPH important?", ["To avoid documentation", "To allow rapid action and treatment", "To delay referral", "To reduce the number of staff needed"], 1], ["When abnormal bleeding is suspected, what should a health worker do?", ["Wait and observe", "Act promptly according to the approved protocol", "Send the woman home", "Wait until the next shift"], 1]]}, {"title": "Recognizing PPH Early", "content": "Trainees learn to observe bleeding, monitor vital signs and recognize deterioration. Continue monitoring the woman's condition after delivery and respond promptly when her condition is worsening.", "questions": [["Should a health worker monitor the woman's condition after delivery?", ["Yes", "No"], 0], ["Which of these should be monitored?", ["Bleeding", "Vital signs", "General condition", "All of the above"], 3], ["If the woman's condition is getting worse, what should happen?", ["Continue waiting", "Escalate and seek appropriate care", "Ignore it", "Discharge her"], 1]]}, {"title": "Responding to PPH", "content": "When PPH is identified, act promptly and follow the locally approved PPH protocol. Alert the appropriate team when help is needed. Current WHO PPH guidance highlights the MOTIVE bundle as part of the response framework.", "questions": [["What should happen when PPH is identified?", ["Act promptly", "Wait for the bleeding to stop", "Send the woman home", "Do nothing"], 0], ["What should the health worker do when help is needed?", ["Call for help", "Work alone", "Leave the woman unattended", "Wait until the emergency is over"], 0], ["Which bundle is highlighted in current WHO PPH guidance?", ["MOTIVE", "SLEEP", "CARE", "SAFE"], 0]]}, {"title": "Referral and Escalation", "content": "Know when to seek higher-level care and have referral contacts ready before an emergency occurs. If bleeding persists, the woman becomes unstable, or higher-level care is required, activate the referral pathway promptly.", "questions": [["When should referral be considered?", ["When the woman is unstable or bleeding persists", "Only the next day", "After the woman has recovered", "Never"], 0], ["What should a health worker know before an emergency?", ["Referral facility", "Emergency contact", "Transport arrangements", "All of the above"], 3], ["Why is early referral important?", ["To avoid treatment", "To reduce dangerous delays in receiving appropriate care", "To complete paperwork", "To send everyone to another facility"], 1]]}, {"title": "Preparedness", "content": "Prepare medicines, supplies, emergency contacts, referral information and team roles before an emergency happens. Regular practice can help health workers respond more confidently and quickly.", "questions": [["Should emergency supplies be prepared before they are needed?", ["Yes", "No"], 0], ["Should a health worker know the local referral pathway?", ["Yes", "No"], 0], ["What can regular practice or drills help health workers do?", ["Respond more confidently and quickly", "Avoid working with the team", "Delay emergency care", "Replace clinical training"], 0]]}];
+const videos=[["WHO Bleeding After Birth training materials", "https://www.who.int/tools/bleeding-after-birth"], ["Examining the placenta", "https://globalhealthmedia.org/video/vbabc-10/"], ["Using an Anti-Shock Garment", "https://globalhealthmedia.org/video/vbabc-04/"], ["Uterine compression", "https://globalhealthmedia.org/video/vbabc-03/"], ["Aortic compression", "https://globalhealthmedia.org/video/vbabc-05/"], ["Cervical tears", "https://globalhealthmedia.org/video/vbabc-08/"]];
+let completed=JSON.parse(localStorage.getItem('g_completed')||'[]');
+let quizBest=Number(localStorage.getItem('g_quizBest')||0);
+let currentModule=0, qAnswers={};
+
+const navItems=[['home','Home'],['learn','Learn'],['videos','Videos'],['quiz','Quiz'],['progress','Progress']];
+document.getElementById('nav').innerHTML=navItems.map(x=>`<button data-view="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
+
+function show(id){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+ if(id==='learn')renderModules(); if(id==='progress')renderProgress(); if(id==='quiz')renderQuiz(); if(id==='videos')renderVideos();
+ window.scrollTo(0,0);
+}
+function register(){
+ const name=document.getElementById('name').value.trim();
+ const phoneValue=document.getElementById('phone').value.trim();
+ const roleValue=document.getElementById('role').value;
+ const facilityValue=document.getElementById('facility').value.trim();
+ const districtValue=document.getElementById('district').value.trim();
+ if(!name||!phoneValue||!roleValue||!facilityValue||!districtValue){alert('Please complete all registration details before continuing.');return}
+ const user={name,phone:phoneValue,role:roleValue,facility:facilityValue,district:districtValue};
+ localStorage.setItem('g_user_v2',JSON.stringify(user)); document.getElementById('welcomeName').textContent=name.split(' ')[0]; show('home');
+}
+function loadRegistration(){
+ const user=JSON.parse(localStorage.getItem('g_user_v2')||'null');
+ if(user){
+  document.getElementById('name').value=user.name||'';
+  document.getElementById('phone').value=user.phone||'';
+  document.getElementById('role').value=user.role||'';
+  document.getElementById('facility').value=user.facility||'';
+  document.getElementById('district').value=user.district||'';
+  document.getElementById('welcomeName').textContent=(user.name||'Trainee').split(' ')[0];
+ }
+ return user;
+}
+function renderModules(){
+ document.getElementById('moduleList').innerHTML=modules.map((m,i)=>`<div class="card"><div class="module"><div><span class="badge">SECTION ${i+1}</span><h3>${m.title}</h3></div><span>${completed.includes(i)?'✅':'📘'}</span></div><p>${m.content}</p><button class="btn" onclick="openLesson(${i})">${completed.includes(i)?'Review':'Start'}</button></div>`).join('');
+}
+function openLesson(i){
+ currentModule=i;qAnswers={};const m=modules[i];
+ let q=m.questions.map((q,qi)=>`<div class="question"><h3>${qi+1}. ${q[0]}</h3>${q[1].map((o,oi)=>`<button class="option" onclick="answer(${qi},${oi},this)">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}<div id="fb${qi}"></div></div>`).join('');
+ document.getElementById('lessonBox').innerHTML=`<div class="hero"><span class="badge">SECTION ${i+1}</span><h1>${m.title}</h1><p>${m.content}</p></div><div class="card">${q}<button class="btn" onclick="completeLesson()">MARK LESSON COMPLETE</button></div>`;
+ show('lesson');
+}
+function answer(qi,oi,el){
+ const q=modules[currentModule].questions[qi]; qAnswers[qi]=oi;
+ el.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');
+ const box=document.getElementById('fb'+qi);
+ if(oi===q[2])box.innerHTML='<div class="feedback good">✓ Correct. Well done.</div>';
+ else box.innerHTML='<div class="feedback bad">✗ Not quite. Review the lesson and try again.</div>';
+}
+function completeLesson(){
+ const unanswered=modules[currentModule].questions.some((q,i)=>qAnswers[i]===undefined);
+ if(unanswered){alert('Please answer all questions before completing this lesson.');return}
+ if(!completed.includes(currentModule))completed.push(currentModule);
+ localStorage.setItem('g_completed',JSON.stringify(completed));localStorage.setItem('g_lastDate',new Date().toLocaleDateString());
+ show('learn');
+}
+function renderQuiz(){
+ const all=modules.flatMap(m=>m.questions);
+ const chosen=[all[0],all[3],all[6],all[9],['Does GLADYS PPH-MOBILE replace clinical care?',['Yes','No'],1]];
+ qAnswers={};
+ document.getElementById('quizBox').innerHTML=chosen.map((q,qi)=>`<div class="card question"><h3>${qi+1}. ${q[0]}</h3>${q[1].map((o,oi)=>`<button class="option" onclick="quizAnswer(${qi},${oi},this)">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}</div>`).join('')+'<button class="btn" onclick="gradeQuiz()">SUBMIT QUIZ</button><div id="quizResult"></div>';
+ window.quizQuestions=chosen;
+}
+function quizAnswer(qi,oi,el){el.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');qAnswers['quiz'+qi]=oi}
+function gradeQuiz(){
+ let score=0;window.quizQuestions.forEach((q,i)=>{if(qAnswers['quiz'+i]===q[2])score++});
+ const pct=Math.round(score/window.quizQuestions.length*100);if(pct>quizBest){quizBest=pct;localStorage.setItem('g_quizBest',quizBest)}
+ document.getElementById('quizResult').innerHTML=`<div class="card feedback ${pct>=80?'good':'bad'}"><b>Your Score: ${pct}%</b><br>${pct>=80?'Well done. Keep reviewing your lessons.':'Review the lessons and try again.'}</div>`;
+}
+function renderVideos(){document.getElementById('videoList').innerHTML=videos.map(v=>`<div class="list"><div><b>${v[0]}</b><br><span class="small">Official/approved training resource</span></div><a class="btn" href="${v[1]}" target="_blank">Open</a></div>`).join('')}
+function setReminder(freq){localStorage.setItem('g_reminder',freq);document.getElementById('reminderStatus').textContent='✓ '+freq+' reminder preference saved.'}
+function renderProgress(){
+ document.getElementById('lessonStat').textContent=completed.length+' / '+modules.length;
+ document.getElementById('bar').style.width=(completed.length/modules.length*100)+'%';
+ document.getElementById('quizStat').textContent=quizBest?quizBest+'%':'—';
+ document.getElementById('dateStat').textContent=localStorage.getItem('g_lastDate')||'—';
+}
+const user=loadRegistration();
+if(user){show('home')}else{show('welcome')}
+
+const ADMIN_PIN = '2468';
+let importedRecords = JSON.parse(localStorage.getItem('g_importedRecords')||'[]');
+
+function openAdmin(){
+  const pin = prompt('Data collection access code:');
+  if(pin !== ADMIN_PIN){ if(pin !== null) alert('Access denied.'); return; }
+  renderAdmin();
+  show('admin');
+}
+
+function renderAdmin(){
+  const user = JSON.parse(localStorage.getItem('g_user_v2')||'null');
+  document.getElementById('adminRegistered').textContent = user ? '1' : '0';
+  document.getElementById('adminLessons').textContent = completed.length;
+  document.getElementById('adminQuiz').textContent = quizBest ? quizBest+'%' : '—';
+  document.getElementById('adminLast').textContent = localStorage.getItem('g_lastDate')||'—';
+
+  const box = document.getElementById('adminRecords');
+  if(!importedRecords.length){
+    box.innerHTML='<p class="admin-note">No imported records yet.</p>';
+    return;
+  }
+  box.innerHTML='<table class="admin-table"><thead><tr><th>Name</th><th>Role</th><th>Facility</th><th>Lessons</th><th>Quiz</th></tr></thead><tbody>'+
+    importedRecords.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.role)}</td><td>${esc(r.facility)}</td><td>${r.lessonsCompleted||0}/5</td><td>${r.quizBest||'—'}</td></tr>`).join('')+
+    '</tbody></table>';
+}
+
+function esc(v){
+  return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function exportData(){
+  const user = JSON.parse(localStorage.getItem('g_user_v2')||'null');
+  if(!user){ alert('No registration data is available on this device.'); return; }
+  const record = {
+    exportedAt:new Date().toISOString(),
+    name:user.name, phone:user.phone, role:user.role,
+    facility:user.facility, district:user.district,
+    lessonsCompleted:completed.length,
+    completedLessons:completed,
+    quizBest:quizBest||0,
+    lastLearningDate:localStorage.getItem('g_lastDate')||'',
+    reminder:localStorage.getItem('g_reminder')||''
+  };
+  const blob=new Blob([JSON.stringify(record,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='gladys_pph_mobile_record_'+Date.now()+'.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  document.getElementById('adminMessage').textContent='Record exported successfully.';
+}
+
+function importData(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const r=JSON.parse(reader.result);
+      if(!r.name || !r.role){throw new Error('Invalid record');}
+      importedRecords.push(r);
+      localStorage.setItem('g_importedRecords',JSON.stringify(importedRecords));
+      document.getElementById('adminMessage').textContent='Record imported successfully.';
+      renderAdmin();
+    }catch(e){alert('This is not a valid GLADYS PPH-Mobile data record.');}
+  };
+  reader.readAsText(file);
+}
+
+function clearImportedData(){
+  if(!confirm('Clear all imported records from this device?'))return;
+  importedRecords=[];
+  localStorage.setItem('g_importedRecords','[]');
+  renderAdmin();
+}
+
+</script>
+<button class="admin-link" aria-label="Data collection" title="Data collection" onclick="openAdmin()"></button>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));}</script>
+</body>
+</html>

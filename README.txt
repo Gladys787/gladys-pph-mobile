@@ -1,0 +1,1 @@
+Gladys PPH-Mobile lightweight PWA based on the existing version. Serve this folder over HTTPS, open the address on Android Chrome, then use Add to Home screen/Install app. The first visit should be online so core files can be cached for offline use.
